@@ -51,8 +51,7 @@ class Upper_Bus:
             pygame.draw.rect(screen, window_color, pygame.Rect(x, self.y+12, 20*size, 20*size))
 
     def move(self):
-        # move in the x-direction
-        self.x += 5
+        self.x += 5     # move to the right
 
 
 # composite class
@@ -80,8 +79,7 @@ class Lower_Bus:
         self.bus.draw_windows(2)
 
     def move(self):
-        # move in the x-direction
-        self.bus.x -= 2.5
+        self.bus.x -= 2.5   # move to the left
 
 
 class Road:
@@ -111,8 +109,10 @@ class Cloud:
         pygame.draw.circle(screen, 'white', (self.x+self.size, int(self.y-self.size*.1)), int(self.size*.4))
 
     def move(self):
-        self.x -= 2
-        self.size -= 0.5
+        self.x -= 2     # move to the left
+        
+    def shrink(self):
+        self.size -= 0.5    # shrink size
 
 
 # instances
@@ -123,6 +123,7 @@ bus_4 = Lower_Bus(200,340,150,70,255,128,0)
 bus_5 = Upper_Bus(-180,250,150,70,0,0,255)
 
 road = Road()
+
 cloud_1 = Cloud(350,85,85)
 cloud_2 = Cloud(185,120,70)
 cloud_3 = Cloud(70,60,60)
@@ -136,50 +137,53 @@ while running:
         if event.type == pygame.QUIT:
           running = False
 
-        screen.fill((175,238,238))  # set blue skies background
+    screen.fill((175,238,238))  # set blue skies background
 
-        # show objects
-        road.show()
+    # show objects
+    road.show()
 
-        bus_1.show()
-        bus_1.draw_wheels()   
-        bus_1.draw_windows(4)
-        bus_1.move()
+    bus_1.show()
+    bus_1.draw_wheels()   
+    bus_1.draw_windows(4)
+    bus_1.move()
       
-        bus_2.show()
-        bus_2.draw_wheels()
-        bus_2.draw_windows(3)
-        bus_2.move()
+    bus_2.show()
+    bus_2.draw_wheels()
+    bus_2.draw_windows(3)
+    bus_2.move()
 
-        bus_3.show()
-        bus_3.draw_wheels()
-        bus_3.draw_windows()
-        bus_3.move()
+    bus_3.show()
+    bus_3.draw_wheels()
+    bus_3.draw_windows()
+    bus_3.move()
 
-        bus_4.show()
-        bus_4.draw_wheels()
-        bus_4.draw_windows()
-        bus_4.move()
+    bus_4.show()
+    bus_4.draw_wheels()
+    bus_4.draw_windows()
+    bus_4.move()
 
-        bus_5.show()
-        bus_5.draw_wheels()
-        bus_5.draw_windows(5)
-        bus_5.move()
+    bus_5.show()
+    bus_5.draw_wheels()
+    bus_5.draw_windows(5)
+    bus_5.move()
 
-        cloud_1.show()
-        cloud_1.move() 
+    cloud_1.show()
+    cloud_1.move() 
+    cloud_1.shrink()
 
-        cloud_2.show()
-        cloud_2.move()
+    cloud_2.show()
+    cloud_2.move()
+    cloud_2.shrink()
         
-        cloud_3.show()
-        cloud_3.move()
+    cloud_3.show()
+    cloud_3.move()
+    cloud_3.shrink()
+        
+    # flip the display
+    pygame.display.flip()
 
-        # flip the display
-        pygame.display.flip()
-
-        # set clock
-        clock.tick(20)
+    # set clock
+    clock.tick(40)
 
     
 # done! time to quit
