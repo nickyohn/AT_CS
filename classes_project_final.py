@@ -41,9 +41,8 @@ class Upper_Bus:
     # draw windows on the bus
     def draw_windows(self, num_window):
         self.num_window = num_window
-
+        
         size = 1   # window size
-
         window_color = (212,246,255)   # window color
         
         for window in range(1, num_window + 1):
