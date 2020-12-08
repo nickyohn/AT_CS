@@ -36,7 +36,7 @@ class Upper_Bus:
         pygame.draw.circle(screen,'black',(self.x + gap, self.height + self.y), radius)
         pygame.draw.circle(screen,'grey',(self.x + gap, self.height + self.y), radius/2)    
         pygame.draw.circle(screen,'black',(self.x + self.width - gap, self.height + self.y), radius)
-        pygame.draw.circle(screen,'grey',(self.x + self.width - gap, self.height + self.y), radius/2)
+        pygame.draw.circle(screen,'grey',(self.x + self.width - gap, self.height + self.y), radius/2)  
 
     # draw windows on the bus
     def draw_windows(self, num_window):
