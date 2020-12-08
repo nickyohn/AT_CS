@@ -181,7 +181,7 @@ while running:
     pygame.display.flip()
 
     # set clock
-    clock.tick(40)
+    clock.tick(20)
 
     
 # done! time to quit
