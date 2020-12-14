@@ -28,9 +28,9 @@ def menu():
   print('3: Log out')
   choice = input('What would you like to do?') 
   
-  if choice == '1':   # send a message
+  if choice == '1':   
     global send
-    def send():
+    def send():   # send a message
       print('\nSend message')
       recipient = input('\nEnter recipient: ')
       text = input('Enter message: ')
@@ -38,15 +38,16 @@ def menu():
       message_data = {recipient: text}
       print("\nRecipient:", recipient, "\nMessage:", message_data[recipient])
     send()
-  
-  # only displays most recent message
-  elif choice == '2':   # display a message 
-    def display():
+
+  elif choice == '2':    
+    def display():    # display a message
       print('\nDisplay messages\n')
       recipient = username
       print("Message:",message_data[recipient])
-      if input("Would you like to respond? (y/n)") == "y":
-        send()
+      def react():    # react to message
+        if input("Would you like to respond? (y/n)") == "y":
+          send()
+      react()
     display()
         
   elif choice == '3':   # log out 
