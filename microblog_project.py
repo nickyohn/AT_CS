@@ -14,7 +14,6 @@ class User:
       print("Username and password do not match. Try again.")	
       logged_in = False
 
-
 def login(u):
     global username
     username = input('Enter username: ')
