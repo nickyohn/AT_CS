@@ -14,6 +14,7 @@ class User:
       print("Username and password do not match. Try again.")	
       logged_in = False
 
+
 def login(u):
     global username
     username = input('Enter username: ')
@@ -28,22 +29,32 @@ def menu():
   choice = input('What would you like to do?') 
   
   if choice == '1':   # send a message
-    print('\nSend message')
-    recipient = input('\nEnter recipient: ')
-    text = input('Enter message: ')
-    global message_data
-    message_data = {recipient: text}
-    print("\nRecipient:", recipient, "\nMessage:", message_data[recipient])
+    global send
+    def send():
+      print('\nSend message')
+      recipient = input('\nEnter recipient: ')
+      text = input('Enter message: ')
+      global message_data
+      message_data = {recipient: text}
+      print("\nRecipient:", recipient, "\nMessage:", message_data[recipient])
+    send()
   
+  # only displays most recent message
   elif choice == '2':   # display a message 
-    print('\nDisplay messages\n')
-    recipient = username
-    print("Message:",message_data[recipient])
-    
+    def display():
+      print('\nDisplay messages\n')
+      recipient = username
+      print("Message:",message_data[recipient])
+      if input("Would you like to respond? (y/n)") == "y":
+        send()
+    display()
+        
   elif choice == '3':   # log out 
-    print('\nLog out')
-    global logged_in
-    logged_in = False
+    def log_out():
+      print('\nLog out')
+      global logged_in
+      logged_in = False
+    log_out()
   
   else:
     print('please enter a valid choice')
@@ -61,4 +72,3 @@ def main():
             login(user)
 
 main()
-
