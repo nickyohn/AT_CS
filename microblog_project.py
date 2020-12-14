@@ -35,7 +35,6 @@ def menu():
     message_data = {recipient: text}
     print("\nRecipient:", recipient, "\nMessage:", message_data[recipient])
   
-  # only displays most recent message
   elif choice == '2':   # display a message 
     print('\nDisplay messages\n')
     recipient = username
