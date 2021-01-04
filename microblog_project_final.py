@@ -117,7 +117,7 @@ def menu(user, message):
     print('Menu Choices')
     print('1: Send a message')
     print('2: Show messages')
-    print('3: View emojis')
+    print('3: Show emojis')
     print('4: Log out')
     print('5: Quit')
     choice = input('What would you like to do? ')    
@@ -129,10 +129,10 @@ def menu(user, message):
     elif choice == '2':   # show messages
         print('Show messages\n')
         message.show(username)
-    elif choice == '3':   # view emojis
-        print('View emojis\n')
+    elif choice == '3':   # show emojis
+        print('Show emojis\n')
         print_emojis()
-    elif choice == '4':
+    elif choice == '4':   # log out
         print('Log out')
         user.log_out()
     elif choice == '5':   # quit 
@@ -141,7 +141,6 @@ def menu(user, message):
     else:
         print('Please enter a valid choice')
     print()
-
 
 def main():
     user = User()
