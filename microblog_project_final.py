@@ -49,11 +49,9 @@ class Message:
         self.recipient = recipient
         self.text = text
         with shelve.open(database_name) as data:
-            # dictionary for sender info
-            sender_data = data['senders']
+            sender_data = data['senders']    # dictionary for sender info
             sender_data = {recipient: sender}
-            data['senders'] = sender_data
-            # dictionary for message info
+            data['senders'] = sender_data:    # dictionary for message info
             message_data = data['messages']
             message_data = {sender: text}
             data['messages'] = message_data
