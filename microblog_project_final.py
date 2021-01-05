@@ -12,7 +12,7 @@ class User:
                 data['users'] = {}
 
     def check_login(self, username, password):
-      # checks username and password
+      # check username and password
       self.username = username
       self.password = password
       success = False
@@ -27,12 +27,12 @@ class User:
       return success
       
     def log_out(self):
-        # logs out user
+        # log out
         global logged_in
         logged_in = False
 
     def save_user(self, username, password):
-        # creates a new user in the database
+        # save new user in database
         with shelve.open(database_name) as data:
             user_data = data['users']
             user_data[username] = password
@@ -45,13 +45,16 @@ class Message:
             data['senders'] = {}
             
     def send(self, sender, recipient, text):
+        # send message
         self.sender = sender
         self.recipient = recipient
         self.text = text
         with shelve.open(database_name) as data:
-            sender_data = data['senders']    # dictionary for sender info
+            # dictionary for sender info
+            sender_data = data['senders']
             sender_data = {recipient: sender}
-            data['senders'] = sender_data:    # dictionary for message info
+            data['senders'] = sender_data
+            # dictionary for message info
             message_data = data['messages']
             message_data = {sender: text}
             data['messages'] = message_data
@@ -62,13 +65,13 @@ class Message:
         with shelve.open(database_name) as data:
             sender_data = data['senders']
             message_data = data['messages']
-            if sender_data == {}:
-                print('You have no messages at this time.')
-            elif message_data == {}:
-                print()
-            else:
+            if username in sender_data:
+                # retrieve messages sent to user
                 sender = sender_data[username]
                 print(f"@{sender} says: {message_data[sender]}")
+            else:
+                # no messages sent to user
+                print('You have no messages at this time.')
 
 def login(user):
     # enter login info 
@@ -79,19 +82,25 @@ def login(user):
     username = input('What is your username? ')
     password = input('What is your password? ')
     if user.check_login(username, password):
+        # correct username/password
         print('Success!')
         global logged_in
         logged_in = True
     else:
+        # incorrect username/password
         print('Sorry, your username or password is incorrect.')
-        print('\nChoices')
+        print('\nChoices:')
         print('1: Try again')
         print('2: Create account')
-        choice = input('What would you like to do? ') 
+        choice = input('What would you like to do?')
         if choice == "1":
-          login(user)
+            # try again
+            login(user)
         elif choice == '2':
-          create_account(user)
+            # create account
+            create_account(user)
+        else:
+            print('Please enter a valid choice')
 
 def create_account(user):
     # create new account
@@ -100,8 +109,9 @@ def create_account(user):
     user.save_user(username, password)
 
 def print_emojis():
-    # prints ASCII emojis to use in messages
+    # print emojis to use in messages
     print(f"Copy and paste whichever you'd like!")
+    print('\nASCII:')
     print('Shrug: ¯\_(ツ)_/¯')
     print('Concerned: ಠ_ಠ')
     print('Crying: ಥ_ಥ')
@@ -109,13 +119,25 @@ def print_emojis():
     print('Annoyed: (¬_¬)')
     print('Shook: (⚆_⚆)')
     print('Animal: (ᵔᴥᵔ)')
+    print('\nEMOJIS:')
+    print('Hot: 🥵')
+    print('Kiss: 😘')
+    print('Crazy: 🤪')
+    print('Eye roll: 🙄')
+    print('Fuming: 😤')
+    print('Sunglasses: 😎')
+    print('Mind blown: 🤯')
+    print('Disappointed: 😔')
+    print('Pleased: 😌')
+    print('Poop: 💩')
+
 
 def menu(user, message):
     print('---------------------')
     print('Menu Choices')
     print('1: Send a message')
     print('2: Show messages')
-    print('3: Show emojis')
+    print('3: View emojis')
     print('4: Log out')
     print('5: Quit')
     choice = input('What would you like to do? ')    
@@ -127,8 +149,8 @@ def menu(user, message):
     elif choice == '2':   # show messages
         print('Show messages\n')
         message.show(username)
-    elif choice == '3':   # show emojis
-        print('Show emojis\n')
+    elif choice == '3':   # view emojis
+        print('View emojis\n')
         print_emojis()
     elif choice == '4':   # log out
         print('Log out')
@@ -139,6 +161,7 @@ def menu(user, message):
     else:
         print('Please enter a valid choice')
     print()
+
 
 def main():
     user = User()
