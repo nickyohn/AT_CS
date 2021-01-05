@@ -1,4 +1,4 @@
-list = ['goat', 'wolf', 'cabbage']
+list = ['man', 'goat', 'wolf', 'cabbage']
 path = []
 
 # defines who can eat who
