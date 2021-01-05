@@ -76,35 +76,6 @@ class Message:
                 # no messages sent to user
                 print('You have no messages at this time.')
 
-def login(user):
-    # enter login info 
-    user = User()
-    print('-------------------------------------')
-    print('Login Screen.')
-    global username
-    username = input('What is your username? ')
-    password = input('What is your password? ')
-    if user.check_login(username, password):
-        # correct username/password
-        print('Success!')
-        global logged_in
-        logged_in = True
-    else:
-        # incorrect username/password
-        print('Sorry, your username or password is incorrect.')
-        print('\nChoices:')
-        print('1: Try again')
-        print('2: Create account')
-        choice = input('\nWhat would you like to do?')
-        if choice == "1":
-            # try again
-            login(user)
-        elif choice == '2':
-            # create account
-            create_account(user)
-        else:
-            print('Please enter a valid choice')
-
 class Profile:
     def __init__(self):
         with shelve.open(database_name) as data:
@@ -158,6 +129,35 @@ class Profile:
             print(f"Pronouns: {gender_data[username]}")
             print(f"Age: {age_data[username]}")
             print(f"Hometown: {hometown_data[username]}")
+                
+def login(user):
+    # enter login info 
+    user = User()
+    print('-------------------------------------')
+    print('Login Screen.')
+    global username
+    username = input('What is your username? ')
+    password = input('What is your password? ')
+    if user.check_login(username, password):
+        # correct username/password
+        print('Success!')
+        global logged_in
+        logged_in = True
+    else:
+        # incorrect username/password
+        print('Sorry, your username or password is incorrect.')
+        print('\nChoices:')
+        print('1: Try again')
+        print('2: Create account')
+        choice = input('\nWhat would you like to do?')
+        if choice == "1":
+            # try again
+            login(user)
+        elif choice == '2':
+            # create account
+            create_account(user)
+        else:
+            print('Please enter a valid choice')
 
 def create_account(user):
     # create new account
