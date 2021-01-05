@@ -1,3 +1,6 @@
+# This is a direct-messaging application made by Nick Yohn. Users can send other users messages (including emojis) and read messages sent to them. 
+    # Users can also add in profile information, log out, and create new accounts.
+    
 import shelve
 import sys
 database_name = 'micro'
