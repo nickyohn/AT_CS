@@ -73,7 +73,7 @@ class Message:
                 # retrieve messages sent to user
                 sender = sender_data[username]
                 print(f"@{sender} says: {message_data[sender]}")
-                if input(f"\nView @{sender}'s profile info? (y/n) ") == 'y':
+                if input(f"\nView @{sender}'s profile info? (yes/no) ") == 'yes':
                     profile.show(sender)
             else:
                 # no messages sent to user
