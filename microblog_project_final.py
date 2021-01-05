@@ -71,7 +71,7 @@ class Message:
                 print(f"@{sender} says: {message_data[sender]}")
             else:
                 # no messages sent to user
-                print('You have no messages at this time.')
+                print('You have no new messages at this time.')
 
 def login(user):
     # enter login info 
@@ -83,7 +83,7 @@ def login(user):
     password = input('What is your password? ')
     if user.check_login(username, password):
         # correct username/password
-        print('Success!')
+        print('\nSuccess!')
         global logged_in
         logged_in = True
     else:
@@ -161,7 +161,6 @@ def menu(user, message):
     else:
         print('Please enter a valid choice')
     print()
-
 
 def main():
     user = User()
