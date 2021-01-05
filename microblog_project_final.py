@@ -1,3 +1,6 @@
+# This is a direct-messaging application made by Nick Yohn. Users can send other users messages (including emojis) and read messages sent to them. 
+    # Users can also add in profile information, log out, and create new accounts.
+
 import shelve
 import sys
 database_name = 'micro'
@@ -10,7 +13,7 @@ class User:
         with shelve.open(database_name) as data:
             if 'users' not in data:
                 data['users'] = {}
-
+            
     def check_login(self, username, password):
       # check username and password
       self.username = username
@@ -31,7 +34,7 @@ class User:
         global logged_in
         logged_in = False
 
-    def save_user(self, username, password):
+    def save(self, username, password):
         # save new user in database
         with shelve.open(database_name) as data:
             user_data = data['users']
@@ -71,19 +74,19 @@ class Message:
                 print(f"@{sender} says: {message_data[sender]}")
             else:
                 # no messages sent to user
-                print('You have no new messages at this time.')
+                print('You have no messages at this time.')
 
 def login(user):
     # enter login info 
     user = User()
-    print('---------------------')
+    print('-------------------------------------')
     print('Login Screen.')
     global username
     username = input('What is your username? ')
     password = input('What is your password? ')
     if user.check_login(username, password):
         # correct username/password
-        print('\nSuccess!')
+        print('Success!')
         global logged_in
         logged_in = True
     else:
@@ -92,7 +95,7 @@ def login(user):
         print('\nChoices:')
         print('1: Try again')
         print('2: Create account')
-        choice = input('What would you like to do?')
+        choice = input('\nWhat would you like to do?')
         if choice == "1":
             # try again
             login(user)
@@ -102,11 +105,65 @@ def login(user):
         else:
             print('Please enter a valid choice')
 
+class Profile:
+    def __init__(self):
+        with shelve.open(database_name) as data:
+            if 'birthday' not in data:
+                data['birthday'] = {}
+            if 'gender' not in data:
+                data['gender'] = {}
+            if 'age' not in data:
+                data['age'] = {}
+            if 'hometown' not in data:
+                data['hometown'] = {}
+
+    def save(self, username, birthday, gender, age, hometown):
+        # save profile info  
+        self.username = username
+        self.birthday = birthday
+        self.gender = gender
+        self.age = age
+        self.hometown = hometown
+        with shelve.open(database_name) as data:
+            # dictionary for birthday info
+            birthday_data = data['birthday']
+            birthday_data = {username: birthday}
+            print(birthday_data)
+            data['birthday'] = birthday_data
+            # gender  
+            gender_data = data['gender']
+            gender_data = {username: gender}
+            print(gender_data)
+            data['gender'] = gender_data
+            # age 
+            age_data = data['age']
+            age_data = {username: age}
+            print(age_data)
+            data['age'] = age_data
+            # hometown 
+            hometown_data = data['hometown']
+            hometown_data = {username: hometown}
+            print(hometown_data)
+            data['hometown'] = hometown_data
+      
+    def show(self, username):
+        # print profile info
+        self.username = username
+        with shelve.open(database_name) as data:
+            birthday_data = data['birthday']
+            gender_data = data['gender']
+            age_data = data['age']
+            hometown_data = data['hometown']
+            print(f"Birthday: {birthday_data[username]}")
+            print(f"Pronouns: {gender_data[username]}")
+            print(f"Age: {age_data[username]}")
+            print(f"Hometown: {hometown_data[username]}")
+
 def create_account(user):
     # create new account
     username = input('\nCreate a username: ')
     password = input('Create a password: ')
-    user.save_user(username, password)
+    user.save(username, password)
 
 def print_emojis():
     # print emojis to use in messages
@@ -131,41 +188,63 @@ def print_emojis():
     print('Pleased: 😌')
     print('Poop: 💩')
 
-
 def menu(user, message):
-    print('---------------------')
+    prof = Profile()
+    print('-------------------------------------')
     print('Menu Choices')
+    print('0: Profile info')
     print('1: Send a message')
     print('2: Show messages')
     print('3: View emojis')
     print('4: Log out')
     print('5: Quit')
+    print('-------------------------------------')
     choice = input('What would you like to do? ')    
+    if choice == '0':    # enter/view profile info
+        print('Profile info\n')
+        with shelve.open(database_name) as data:
+            birthday_data = data['birthday']
+            if username not in birthday_data:
+                print('Enter profile info: ')
+                birthday = input('Enter birthday (mm/dd/yyyy): ')
+                gender = input('Enter pronouns: ')
+                age = input('Enter age: ')
+                hometown = input('Enter hometown: ')
+                prof.save(username, birthday, gender, age, hometown)
+            else:
+                prof.show()
+    
     if choice == '1':   # post a message
         print('Send message\n')
         recipient = input('Enter recipient: ')
         text = input('Enter message: ')
         message.send(username, recipient, text)   
+
     elif choice == '2':   # show messages
         print('Show messages\n')
         message.show(username)
+
     elif choice == '3':   # view emojis
         print('View emojis\n')
         print_emojis()
+
     elif choice == '4':   # log out
         print('Log out')
         user.log_out()
+
     elif choice == '5':   # quit 
         print("Bye!")
-        sys.exit()        
+        sys.exit()    
+
     else:
         print('Please enter a valid choice')
+
     print()
 
 def main():
     user = User()
     message = Message()
-    print('Welcome to THE PACKER DIRECT MESSAGES')
+    print('Welcome to The Packer Direct Messages 🎉')
     while True:
         if logged_in == True:
             menu(user, message)
