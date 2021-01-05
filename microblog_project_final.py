@@ -1,6 +1,3 @@
-# This is a direct-messaging application made by Nick Yohn. Users can send other users messages (including emojis) and read messages sent to them. 
-    # Users can also add in profile information, log out, and create new accounts.
-
 import shelve
 import sys
 database_name = 'micro'
@@ -63,6 +60,7 @@ class Message:
             data['messages'] = message_data
 
     def show(self, username):
+        profile = Profile()
         # show messages
         self.username = username
         with shelve.open(database_name) as data:
@@ -72,64 +70,12 @@ class Message:
                 # retrieve messages sent to user
                 sender = sender_data[username]
                 print(f"@{sender} says: {message_data[sender]}")
+                if input(f"\nView @{sender}'s profile info? (y/n) ") == 'y':
+                    profile.show(sender)
             else:
                 # no messages sent to user
                 print('You have no messages at this time.')
 
-class Profile:
-    def __init__(self):
-        with shelve.open(database_name) as data:
-            if 'birthday' not in data:
-                data['birthday'] = {}
-            if 'gender' not in data:
-                data['gender'] = {}
-            if 'age' not in data:
-                data['age'] = {}
-            if 'hometown' not in data:
-                data['hometown'] = {}
-
-    def save(self, username, birthday, gender, age, hometown):
-        # save profile info  
-        self.username = username
-        self.birthday = birthday
-        self.gender = gender
-        self.age = age
-        self.hometown = hometown
-        with shelve.open(database_name) as data:
-            # dictionary for birthday info
-            birthday_data = data['birthday']
-            birthday_data = {username: birthday}
-            print(birthday_data)
-            data['birthday'] = birthday_data
-            # gender  
-            gender_data = data['gender']
-            gender_data = {username: gender}
-            print(gender_data)
-            data['gender'] = gender_data
-            # age 
-            age_data = data['age']
-            age_data = {username: age}
-            print(age_data)
-            data['age'] = age_data
-            # hometown 
-            hometown_data = data['hometown']
-            hometown_data = {username: hometown}
-            print(hometown_data)
-            data['hometown'] = hometown_data
-      
-    def show(self, username):
-        # print profile info
-        self.username = username
-        with shelve.open(database_name) as data:
-            birthday_data = data['birthday']
-            gender_data = data['gender']
-            age_data = data['age']
-            hometown_data = data['hometown']
-            print(f"Birthday: {birthday_data[username]}")
-            print(f"Pronouns: {gender_data[username]}")
-            print(f"Age: {age_data[username]}")
-            print(f"Hometown: {hometown_data[username]}")
-                
 def login(user):
     # enter login info 
     user = User()
@@ -158,6 +104,56 @@ def login(user):
             create_account(user)
         else:
             print('Please enter a valid choice')
+
+class Profile:
+    def __init__(self):
+        with shelve.open(database_name) as data:
+            if 'birthday' not in data:
+                data['birthday'] = {}
+            if 'gender' not in data:
+                data['gender'] = {}
+            if 'age' not in data:
+                data['age'] = {}
+            if 'hometown' not in data:
+                data['hometown'] = {}
+
+    def save(self, username, birthday, gender, age, hometown):
+        # save profile info  
+        self.username = username
+        self.birthday = birthday
+        self.gender = gender
+        self.age = age
+        self.hometown = hometown
+        with shelve.open(database_name) as data:
+            # dictionary for birthday info
+            birthday_data = data['birthday']
+            birthday_data = {username: birthday}
+            data['birthday'] = birthday_data
+            # gender  
+            gender_data = data['gender']
+            gender_data = {username: gender}
+            data['gender'] = gender_data
+            # age 
+            age_data = data['age']
+            age_data = {username: age}
+            data['age'] = age_data
+            # hometown 
+            hometown_data = data['hometown']
+            hometown_data = {username: hometown}
+            data['hometown'] = hometown_data
+      
+    def show(self, username):
+        # print profile info
+        self.username = username
+        with shelve.open(database_name) as data:
+            birthday_data = data['birthday']
+            gender_data = data['gender']
+            age_data = data['age']
+            hometown_data = data['hometown']
+            print(f"Birthday: {birthday_data[username]}")
+            print(f"Pronouns: {gender_data[username]}")
+            print(f"Age: {age_data[username]}")
+            print(f"Hometown: {hometown_data[username]}")
 
 def create_account(user):
     # create new account
@@ -188,8 +184,7 @@ def print_emojis():
     print('Pleased: 😌')
     print('Poop: 💩')
 
-def menu(user, message):
-    prof = Profile()
+def menu(user, message, profile):
     print('-------------------------------------')
     print('Menu Choices')
     print('0: Profile info')
@@ -210,9 +205,9 @@ def menu(user, message):
                 gender = input('Enter pronouns: ')
                 age = input('Enter age: ')
                 hometown = input('Enter hometown: ')
-                prof.save(username, birthday, gender, age, hometown)
+                profile.save(username, birthday, gender, age, hometown)
             else:
-                prof.show()
+                profile.show(username)
     
     if choice == '1':   # post a message
         print('Send message\n')
@@ -242,12 +237,13 @@ def menu(user, message):
     print()
 
 def main():
+    profile = Profile()
     user = User()
     message = Message()
     print('Welcome to The Packer Direct Messages 🎉')
     while True:
         if logged_in == True:
-            menu(user, message)
+            menu(user, message, profile)
         else:
             login(user)
 
