@@ -153,6 +153,7 @@ class Profile:
             gender_data = data['gender']
             age_data = data['age']
             hometown_data = data['hometown']
+            print(f"@{username}")
             print(f"Birthday: {birthday_data[username]}")
             print(f"Pronouns: {gender_data[username]}")
             print(f"Age: {age_data[username]}")
