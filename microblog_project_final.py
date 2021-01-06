@@ -199,6 +199,7 @@ def menu(user, message, profile):
     print('5: Quit')
     print('---------------------------')
     choice = input('What would you like to do? ')    
+    
     if choice == '0':    # enter/view profile info
         print('Profile info\n')
         with shelve.open(database_name) as data:
