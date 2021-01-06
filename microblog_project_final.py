@@ -82,7 +82,7 @@ class Message:
 def login(user):
     # enter login info 
     user = User()
-    print('-------------------------------------')
+    print('----------------------------------------')
     print('Login Screen.')
     global username
     username = input('What is your username? ')
@@ -189,7 +189,7 @@ def print_emojis():
     print('Poop: 💩')
 
 def menu(user, message, profile):
-    print('-------------------------------------')
+    print('---------------------------')
     print('Menu Choices')
     print('0: Profile info')
     print('1: Send a message')
@@ -197,7 +197,7 @@ def menu(user, message, profile):
     print('3: View emojis')
     print('4: Log out')
     print('5: Quit')
-    print('-------------------------------------')
+    print('---------------------------')
     choice = input('What would you like to do? ')    
     if choice == '0':    # enter/view profile info
         print('Profile info\n')
