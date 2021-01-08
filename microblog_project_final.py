@@ -1,6 +1,6 @@
 # This is a direct-messaging application made by Nick Yohn. Users can send other users messages (including emojis) and read messages sent to them. 
     # Users can also add in profile information, log out, and create new accounts.
-    
+
 import shelve
 import sys
 database_name = 'micro'
@@ -54,12 +54,12 @@ class Message:
         self.text = text
         with shelve.open(database_name) as data:
             # dictionary for sender info
-            sender_data = data['senders']
-            sender_data = {recipient: sender}
+            sender_data = data['senders'] 
+            sender_data[recipient] = sender
             data['senders'] = sender_data
             # dictionary for message info
             message_data = data['messages']
-            message_data = {sender: text}
+            message_data[sender] = text
             data['messages'] = message_data
 
     def show(self, username):
@@ -74,6 +74,7 @@ class Message:
                 sender = sender_data[username]
                 print(f"@{sender} says: {message_data[sender]}")
                 if input(f"\nView @{sender}'s profile info? (yes/no) ") == 'yes':
+                    print()
                     profile.show(sender)
             else:
                 # no messages sent to user
@@ -130,21 +131,21 @@ class Profile:
         with shelve.open(database_name) as data:
             # dictionary for birthday info
             birthday_data = data['birthday']
-            birthday_data = {username: birthday}
+            birthday_data[username] = birthday
             data['birthday'] = birthday_data
             # gender  
             gender_data = data['gender']
-            gender_data = {username: gender}
+            gender_data[username] = gender
             data['gender'] = gender_data
             # age 
             age_data = data['age']
-            age_data = {username: age}
+            age_data[username] = age
             data['age'] = age_data
             # hometown 
             hometown_data = data['hometown']
-            hometown_data = {username: hometown}
+            hometown_data[username] = hometown
             data['hometown'] = hometown_data
-      
+    
     def show(self, username):
         # print profile info
         self.username = username
@@ -189,56 +190,60 @@ def print_emojis():
     print('Poop: 💩')
 
 def menu(user, message, profile):
-    print('---------------------------')
+    print('----------------------------------------')
     print('Menu Choices')
-    print('0: Profile info')
-    print('1: Send a message')
-    print('2: Show messages')
-    print('3: View emojis')
-    print('4: Log out')
-    print('5: Quit')
-    print('---------------------------')
+    print('0: Enter profile info')
+    print('1: View profile info')
+    print('2: Send a message')
+    print('3: Show messages')
+    print('4: View emojis')
+    print('5: Log out')
+    print('6: Quit')
+    print('----------------------------------------')
     choice = input('What would you like to do? ')    
     
-    if choice == '0':    # enter/view profile info
-        print('Profile info\n')
+    if choice == '0':    # enter profile info
+        print('Enter profile info\n')
+        birthday = input('Enter birthday (mm/dd/yyyy): ')
+        gender = input('Enter pronouns: ')
+        age = input('Enter age: ')
+        hometown = input('Enter hometown: ')
+        profile.save(username, birthday, gender, age, hometown)
+
+    if choice == '1':   # view profile info
+        print('View profile info\n')
         with shelve.open(database_name) as data:
+            # checks if user has entered any profile info
             birthday_data = data['birthday']
-            if username not in birthday_data:
-                print('Enter profile info: ')
-                birthday = input('Enter birthday (mm/dd/yyyy): ')
-                gender = input('Enter pronouns: ')
-                age = input('Enter age: ')
-                hometown = input('Enter hometown: ')
-                profile.save(username, birthday, gender, age, hometown)
+            if username not in birthday_data:   
+                print('You have not entered any profile info.')
             else:
-                profile.show(username)
-    
-    if choice == '1':   # post a message
+              profile.show(username) 
+                
+    if choice == '2':   # post a message
         print('Send message\n')
         recipient = input('Enter recipient: ')
         text = input('Enter message: ')
         message.send(username, recipient, text)   
 
-    elif choice == '2':   # show messages
+    elif choice == '3':   # show messages
         print('Show messages\n')
         message.show(username)
 
-    elif choice == '3':   # view emojis
+    elif choice == '4':   # view emojis
         print('View emojis\n')
         print_emojis()
 
-    elif choice == '4':   # log out
+    elif choice == '5':   # log out
         print('Log out')
         user.log_out()
 
-    elif choice == '5':   # quit 
+    elif choice == '6':   # quit 
         print("Bye!")
         sys.exit()    
 
     else:
         print('Please enter a valid choice')
-
     print()
 
 def main():
