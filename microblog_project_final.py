@@ -20,9 +20,8 @@ class User:
       self.password = password
       success = False
       with shelve.open(database_name) as data:
-        # checks for username in user database
           user_data = data['users']
-          if username in user_data:
+          if username in user_data:     # checks for username in user database
             if password == user_data[username]:
               global logged_in
               logged_in = True
@@ -34,8 +33,7 @@ class User:
         global logged_in
         logged_in = False
 
-    def save(self, username, password):
-        # save new user in database
+    def save(self, username, password):     # save new user in database
         with shelve.open(database_name) as data:
             user_data = data['users']
             user_data[username] = password
@@ -47,61 +45,51 @@ class Message:
             data['messages'] = {}
             data['senders'] = {}
             
-    def send(self, sender, recipient, text):
-        # send message
+    def send(self, sender, recipient, text):      # send message
         self.sender = sender
         self.recipient = recipient
         self.text = text
-        with shelve.open(database_name) as data:
-            # dictionary for sender info
+        with shelve.open(database_name) as data:      # dictionary for sender info
             sender_data = data['senders'] 
             sender_data[recipient] = sender
-            data['senders'] = sender_data
-            # dictionary for message info
+            data['senders'] = sender_data       # dictionary for message info
             message_data = data['messages']
             message_data[sender] = text
             data['messages'] = message_data
 
-    def show(self, username):
+    def show(self, username):     # show messages
         profile = Profile()
-        # show messages
-        self.username = username
+        self.username = username    
         with shelve.open(database_name) as data:
             sender_data = data['senders']
             message_data = data['messages']
-            if username in sender_data:
-                # retrieve messages sent to user
+            if username in sender_data:      # retrieve messages sent to user
                 sender = sender_data[username]
                 print(f"@{sender} says: {message_data[sender]}")
                 if input(f"\nView @{sender}'s profile info? (yes/no) ") == 'yes':
                     print()
                     profile.show(sender)
-            else:
-                # no messages sent to user
+            else:      # no messages sent to user
                 print('You have no messages at this time.')
 
-def login(user):
-    # enter login info 
+def login(user):       # enter login info 
     user = User()
     print('----------------------------------------')
     print('Login Screen.')
     global username
     username = input('What is your username? ')
     password = input('What is your password? ')
-    if user.check_login(username, password):
-        # correct username/password
+    if user.check_login(username, password):       # correct username/password
         print('Success!')
         global logged_in
         logged_in = True
-    else:
-        # incorrect username/password
+    else:       # incorrect username/password
         print('Sorry, your username or password is incorrect.')
         print('\nChoices:')
         print('1: Try again')
         print('2: Create account')
         choice = input('\nWhat would you like to do?')
-        if choice == "1":
-            # try again
+        if choice == "1":       # try again
             login(user)
         elif choice == '2':
             # create account
@@ -121,15 +109,14 @@ class Profile:
             if 'hometown' not in data:
                 data['hometown'] = {}
 
-    def save(self, username, birthday, gender, age, hometown):
-        # save profile info  
+    def save(self, username, birthday, gender, age, hometown):      # save profile info  
         self.username = username
         self.birthday = birthday
         self.gender = gender
         self.age = age
         self.hometown = hometown
         with shelve.open(database_name) as data:
-            # dictionary for birthday info
+            # birthday 
             birthday_data = data['birthday']
             birthday_data[username] = birthday
             data['birthday'] = birthday_data
@@ -160,14 +147,12 @@ class Profile:
             print(f"Age: {age_data[username]}")
             print(f"Hometown: {hometown_data[username]}")
 
-def create_account(user):
-    # create new account
+def create_account(user):      # create new account
     username = input('\nCreate a username: ')
     password = input('Create a password: ')
     user.save(username, password)
 
-def print_emojis():
-    # print emojis to use in messages
+def print_emojis():      # print emojis to use in messages
     print(f"Copy and paste whichever you'd like!")
     print('\nASCII:')
     print('Shrug: ¯\_(ツ)_/¯')
@@ -202,7 +187,7 @@ def menu(user, message, profile):
     print('----------------------------------------')
     choice = input('What would you like to do? ')    
     
-    if choice == '0':    # enter profile info
+    if choice == '0':     # enter profile info
         print('Enter profile info\n')
         birthday = input('Enter birthday (mm/dd/yyyy): ')
         gender = input('Enter pronouns: ')
@@ -210,35 +195,34 @@ def menu(user, message, profile):
         hometown = input('Enter hometown: ')
         profile.save(username, birthday, gender, age, hometown)
 
-    if choice == '1':   # view profile info
+    if choice == '1':      # view profile info
         print('View profile info\n')
         with shelve.open(database_name) as data:
-            # checks if user has entered any profile info
-            birthday_data = data['birthday']
+            birthday_data = data['birthday']        # checks if user has entered any profile info
             if username not in birthday_data:   
                 print('You have not entered any profile info.')
             else:
               profile.show(username) 
                 
-    if choice == '2':   # post a message
+    if choice == '2':     # post a message
         print('Send message\n')
         recipient = input('Enter recipient: ')
         text = input('Enter message: ')
         message.send(username, recipient, text)   
 
-    elif choice == '3':   # show messages
+    elif choice == '3':     # show messages
         print('Show messages\n')
         message.show(username)
 
-    elif choice == '4':   # view emojis
+    elif choice == '4':     # view emojis
         print('View emojis\n')
         print_emojis()
 
-    elif choice == '5':   # log out
+    elif choice == '5':     # log out
         print('Log out')
         user.log_out()
 
-    elif choice == '6':   # quit 
+    elif choice == '6':     # quit 
         print("Bye!")
         sys.exit()    
 
