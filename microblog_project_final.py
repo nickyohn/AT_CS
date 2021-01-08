@@ -1,5 +1,4 @@
-# This is a direct-messaging application made by Nick Yohn. Users can send other users messages (including emojis) and read messages sent to them. 
-    # Users can also add in profile information, log out, and create new accounts.
+# This is a direct-messaging application made by Nick Yohn. 
 
 import shelve
 import sys
@@ -7,15 +6,13 @@ database_name = 'micro'
 
 class User:
     def __init__(self):
-        # user object starts logged out
         global logged_in
-        logged_in = False
+        logged_in = False       # user object starts logged out
         with shelve.open(database_name) as data:
             if 'users' not in data:
                 data['users'] = {}
             
-    def check_login(self, username, password):
-      # check username and password
+    def check_login(self, username, password):      # check username and password
       self.username = username
       self.password = password
       success = False
@@ -28,8 +25,7 @@ class User:
               success = True
       return success
       
-    def log_out(self):
-        # log out
+    def log_out(self):      # log out
         global logged_in
         logged_in = False
 
