@@ -191,7 +191,7 @@ def menu(user, message, profile):
         hometown = input('Enter hometown: ')
         profile.save(username, birthday, gender, age, hometown)
 
-    if choice == '1':      # view profile info
+    elif choice == '1':      # view profile info
         print('View profile info\n')
         with shelve.open(database_name) as data:
             birthday_data = data['birthday']        # checks if user has entered any profile info
@@ -200,7 +200,7 @@ def menu(user, message, profile):
             else:
               profile.show(username) 
                 
-    if choice == '2':     # post a message
+    elif choice == '2':     # post a message
         print('Send message\n')
         recipient = input('Enter recipient: ')
         text = input('Enter message: ')
@@ -219,6 +219,7 @@ def menu(user, message, profile):
         user.log_out()
 
     elif choice == '6':     # quit 
+        print("Quit\n")
         print("Bye!")
         sys.exit()    
 
